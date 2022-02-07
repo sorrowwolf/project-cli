@@ -9,7 +9,6 @@ function core() {
     console.log('core')
 }
 
-
 function checkPkgVersion() {
     const version = pkg.version;
 }
