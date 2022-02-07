@@ -1,0 +1,26 @@
+{
+  "name": "@sorrow-cli-dev/utils",
+  "version": "1.0.0",
+  "description": "> TODO: description",
+  "author": "sorrowwolf <414471841@qq.com>",
+  "homepage": "https://github.com/sorrowwolf/project-cli/tree/master/packages/utils#readme",
+  "license": "ISC",
+  "main": "lib/utils.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sorrowwolf/project-cli.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/sorrowwolf/project-cli/issues"
+  }
+}
