@@ -1,14 +1,11 @@
 {
-  "name": "@sorrow-cli-dev/core",
+  "name": "@sorrow-cli-dev/log",
   "version": "1.0.0",
-  "description": "cli-dev",
+  "description": "> TODO: description",
   "author": "sorrowwolf <414471841@qq.com>",
-  "homepage": "https://github.com/sorrowwolf/project-cli/tree/master/packages/core#readme",
+  "homepage": "https://github.com/sorrowwolf/project-cli/tree/master/commands/log#readme",
   "license": "ISC",
-  "main": "lib/core.js",
-  "bin": {
-    "sorrow-cli": "bin/index.js"
-  },
+  "main": "lib/index.js",
   "directories": {
     "lib": "lib",
     "test": "__tests__"
@@ -16,6 +13,9 @@
   "files": [
     "lib"
   ],
+  "publishConfig": {
+    "registry": "http://registry.cnpmjs.org/"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sorrowwolf/project-cli.git"
@@ -27,11 +27,6 @@
     "url": "https://github.com/sorrowwolf/project-cli/issues"
   },
   "dependencies": {
-    "@sorrow-cli-dev/log": "file:../../utils/log",
-    "@sorrow-cli-dev/utils": "file:../../utils/utils",
-    "colors": "^1.4.0",
-    "import-local": "^3.1.0",
-    "npmlog": "^6.0.0",
-    "semver": "^7.3.5"
+    "npmlog": "^6.0.0"
   }
 }
