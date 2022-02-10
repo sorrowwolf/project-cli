@@ -29,6 +29,7 @@
   "dependencies": {
     "@sorrow-cli-dev/log": "file:../../utils/log",
     "@sorrow-cli-dev/utils": "file:../../utils/utils",
+    "@sorrow-cli-dev/get-npm-info": "file:../../utils/get-npm-info",
     "colors": "^1.4.0",
     "dotenv": "^16.0.0",
     "import-local": "^3.1.0",

@@ -11,19 +11,29 @@ const colors = require("colors");
 const userHome = require("user-home");
 const pathExists = require("path-exists").sync;
 
-let args, config;
+let args;
 
-function core() {
+async function core() {
     try {
         checkPkgVersion();  // 获取版本号
         checkNodeVersion();    // 检查 node 版本号
         checkRoot();    // 检查root账户
         checkUserHome();    // 检查用户主目录
         checkInputArgs();   // 检查入参
-        log.verbose('debug', 'test debug log')
         checkEnv();     // 检查环境变量
+        // await checkGlobalUpdate();    // 检查全局更新
     } catch (error) {
         console.log('error', error);
+    }
+}
+
+async function checkGlobalUpdate() {
+    const currentVersion = pkg.version;
+    const npmName = pkg.name;
+    const { getNpmSemverVersion } = require("@sorrow-cli-dev/get-npm-info");
+    const lastVersion = await getNpmSemverVersion(currentVersion, npmName);
+    if (lastVersion && semver.gt(lastVersion, currentVersion)) {
+        log.warn(colors.yellow(`请手动更新 ${npmName}，当前版本 ${currentVersion}，最新版本 ${lastVersion}`));
     }
 }
 
