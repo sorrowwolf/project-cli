@@ -25,5 +25,8 @@
   },
   "bugs": {
     "url": "https://github.com/sorrowwolf/project-cli/issues"
+  },
+  "dependencies": {
+    "@sorrow-cli-dev/utils": "file:../../utils/utils"
   }
 }

@@ -27,6 +27,7 @@
     "url": "https://github.com/sorrowwolf/project-cli/issues"
   },
   "dependencies": {
-    "@sorrow-cli-dev/package": "file:../../models/package"
+    "@sorrow-cli-dev/package": "file:../../models/package",
+    "@sorrow-cli-dev/log": "file:../../utils/log"
   }
 }

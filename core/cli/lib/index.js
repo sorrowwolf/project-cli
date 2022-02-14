@@ -42,11 +42,8 @@ function registerCommand() {
     
     // 开启debug模式
     program.on('option:debug', function(e) {
-        if (e) {
-            process.env.LOG_LEVEL = 'verbose';
-        } else {
-            process.env.LOG_LEVEL = 'info';
-        }
+        process.env.LOG_LEVEL = 'verbose';
+        log.level = process.env.LOG_LEVEL;
     })
 
     // 指定targetPath
@@ -70,6 +67,8 @@ function registerCommand() {
 }
 
 async function prepare() {
+    process.env.LOG_LEVEL = 'info';
+    log.level = process.env.LOG_LEVEL;
     checkPkgVersion();  // 获取版本号
     checkNodeVersion();    // 检查 node 版本号
     checkRoot();    // 检查root账户
