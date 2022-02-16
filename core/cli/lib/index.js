@@ -23,7 +23,10 @@ async function core() {
         await prepare();
         registerCommand();
     } catch (error) {
-        console.log('error', error);
+        log.error(error.message);
+        if (program.debug) {
+            console.log('error', error);
+        }
     }
 }
 

@@ -1,9 +1,9 @@
 {
-  "name": "@sorrow-cli-dev/package",
+  "name": "@sorrow-cli-dev/format-path",
   "version": "1.0.0",
   "description": "> TODO: description",
   "author": "sorrowwolf <414471841@qq.com>",
-  "homepage": "https://github.com/sorrowwolf/project-cli/tree/master/commands/package#readme",
+  "homepage": "https://github.com/sorrowwolf/project-cli/tree/master/commands/format-path#readme",
   "license": "ISC",
   "main": "lib/index.js",
   "directories": {
@@ -25,12 +25,5 @@
   },
   "bugs": {
     "url": "https://github.com/sorrowwolf/project-cli/issues"
-  },
-  "dependencies": {
-    "@sorrow-cli-dev/format-path": "file:../../utils/format-path",
-    "@sorrow-cli-dev/utils": "file:../../utils/utils",
-    "@sorrow-cli-dev/get-npm-info": "file:../../utils/get-npm-info",
-    "npminstall": "^5.4.1",
-    "pkg-dir": "^5.0.0"
   }
 }
