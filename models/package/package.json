@@ -27,6 +27,7 @@
     "url": "https://github.com/sorrowwolf/project-cli/issues"
   },
   "dependencies": {
-    "@sorrow-cli-dev/utils": "file:../../utils/utils"
+    "@sorrow-cli-dev/utils": "file:../../utils/utils",
+    "pkg-dir": "^5.0.0"
   }
 }

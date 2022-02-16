@@ -1,6 +1,8 @@
 'use strict';
 
 const { isObject } = require("@sorrow-cli-dev/utils");
+const pkgDir = require("pkg-dir").sync;
+const path = require("path");
 
 class Package {
     constructor(options) {
@@ -10,10 +12,8 @@ class Package {
         if (!isObject(options)) {
             throw new Error('Package类的options必须为对象!');
         }
-        // package 的路径
+        // package 的目标路径
         this.targetPath = options.targetPath;
-        // package 的存储路径
-        this.storePath = options.storePath;
         // package 的name
         this.packageName = options.packageName;
         // package 的version
@@ -36,8 +36,19 @@ class Package {
     }
 
     // 获取入口文件的路径
-    getRootPath() {
-
+    getRootFilePath() {
+        // 1. 获取package.json所在目录 -> pkg-dir
+        const dir = pkgDir(this.targetPath);
+        if (dir) {
+            // 2. 读取package.json - require()
+            const pkgFile = require(path.resolve(dir, 'package.json'));
+            // 3. main/lib - path
+            if (pkgFile && pkgFile.main) {
+                // 4, 路径的兼容(macOS/windows)
+                return path.resolve(dir, pkgFile.main);
+            }
+        }
+        return null;
     }
 }
 
