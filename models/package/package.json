@@ -28,9 +28,11 @@
   },
   "dependencies": {
     "@sorrow-cli-dev/format-path": "file:../../utils/format-path",
-    "@sorrow-cli-dev/utils": "file:../../utils/utils",
     "@sorrow-cli-dev/get-npm-info": "file:../../utils/get-npm-info",
+    "@sorrow-cli-dev/utils": "file:../../utils/utils",
+    "fs-extra": "^9.0.1",
     "npminstall": "^5.4.1",
+    "path-exists": "^4.0.0",
     "pkg-dir": "^5.0.0"
   }
 }
