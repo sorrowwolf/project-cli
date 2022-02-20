@@ -1,9 +1,9 @@
 {
-  "name": "@sorrow-cli-dev/init",
+  "name": "@sorrow-cli-dev/command",
   "version": "1.0.0",
   "description": "> TODO: description",
   "author": "sorrowwolf <414471841@qq.com>",
-  "homepage": "https://github.com/sorrowwolf/project-cli/tree/master/commands/init#readme",
+  "homepage": "https://github.com/sorrowwolf/project-cli/tree/master/commands/command#readme",
   "license": "ISC",
   "main": "lib/index.js",
   "directories": {
@@ -14,7 +14,7 @@
     "lib"
   ],
   "publishConfig": {
-    "access": "public"
+    "registry": "http://registry.npmjs.org"
   },
   "repository": {
     "type": "git",
@@ -27,7 +27,8 @@
     "url": "https://github.com/sorrowwolf/project-cli/issues"
   },
   "dependencies": {
-    "@sorrow-cli-dev/command": "file:../../models/command",
+    "colors": "^1.4.0",
+    "semver": "^7.3.5",
     "@sorrow-cli-dev/log": "file:../../utils/log"
   }
 }

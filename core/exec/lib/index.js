@@ -3,6 +3,7 @@
 const path = require("path");
 const Package = require("@sorrow-cli-dev/package");
 const log = require("@sorrow-cli-dev/log");
+const cp = require("child_process");
 
 const SETTINGS = {
     init: '@sorrow-cli-dev/init'
@@ -51,11 +52,38 @@ async function exec() {
     }
     const rootFile = pkg.getRootFilePath();
     if (rootFile) {
-        // 在当前进程中调用
-        require(rootFile).apply(null, arguments);
-        // 在node子进程中调用
-        
+        try {
+            // 在当前进程中调用
+            // require(rootFile).call(null, Array.from(arguments));
+            // 在node子进程中调用
+            const args = Array.from(arguments).slice(0, 2);
+            const code = `require('${rootFile}').call(null, ${JSON.stringify(args)})`;
+            const child = spawn('node', ['-e', code], {
+                cwd: process.cwd(),
+                stdio: 'inherit',
+            });
+            child.on('error', e => {
+                log.error(e.message);
+                process.exit(1);
+            });
+            child.on('exit', e => {
+                log.verbose('命令执行成功: ' + e);
+                process.exit(e);
+            })
+
+        } catch (e) {
+            log.error(e.message);
+        }
     }
+}
+
+// 兼容macOS和windows系统
+function spawn(command, args, options) {
+    const win32 = process.platform === 'win32';
+    const cmd = win32 ? 'cmd' : command;
+    const cmdArgs = win32 ? ['/c'].concat(command, args) : args;
+    console.log(cmd, cmdArgs)
+    return cp.spawn(cmd, cmdArgs, options || {});
 }
 
 module.exports = exec;

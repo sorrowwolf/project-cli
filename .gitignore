@@ -1,6 +1,6 @@
 node_modules
 
-
+commands/*/package-lock.json
 core/*/package-lock.json
 utils/*/package-lock.json
 models/*/package-lock.json

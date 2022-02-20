@@ -73,7 +73,6 @@ async function prepare() {
     process.env.LOG_LEVEL = 'info';
     log.level = process.env.LOG_LEVEL;
     checkPkgVersion();  // 获取版本号
-    checkNodeVersion();    // 检查 node 版本号
     checkRoot();    // 检查root账户
     checkUserHome();    // 检查用户主目录
     // checkInputArgs();   // 检查入参
@@ -141,13 +140,6 @@ function checkRoot() {
     rootCheck();
 }
 
-function checkNodeVersion() {
-    const currentVersion = process.version;
-    const lowestVersion = constant.LOWEST_VERSION;
-    if (semver.lt(currentVersion, lowestVersion)) {
-        throw new Error(colors.red(`sorrow-cli需要安装 v${lowestVersion} 以上版本的nodejs`));
-    }
-}
 
 function checkPkgVersion() {
     const version = pkg.version;
