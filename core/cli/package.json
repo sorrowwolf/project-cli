@@ -5,7 +5,7 @@
   "author": "sorrowwolf <414471841@qq.com>",
   "homepage": "https://github.com/sorrowwolf/project-cli/tree/master/packages/core#readme",
   "license": "ISC",
-  "main": "lib/core.js",
+  "main": "lib/index.js",
   "bin": {
     "sorrow-cli": "bin/index.js"
   },
