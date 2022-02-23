@@ -3,8 +3,12 @@
 const fs = require("fs");
 const inquirer = require("inquirer");
 const fse = require("fs-extra");
+const semver = require("semver");
 const Command = require("@sorrow-cli-dev/command");
 const log = require('@sorrow-cli-dev/log');
+
+const TYPE_PROJECT = 'project';
+const TYPE_COMPONENT = 'component';
 
 class InitCommand extends Command {
     init() {
@@ -55,10 +59,85 @@ class InitCommand extends Command {
                 }
             }
         }
-        
         // 3. 选择创建项目或组件
         // 4. 获取项目的基本信息
+        return this.getProjectInfo();
     }
+
+    async getProjectInfo() {
+        const projectInfo = {};
+        const { type } = await inquirer.prompt({
+            type: 'list',
+            name: 'type',
+            message: '请选择初始化类型',
+            default: TYPE_PROJECT,
+            choices: [
+                {
+                    name: '项目',
+                    value: TYPE_PROJECT,
+                },
+                {
+                    name: '组件',
+                    value: TYPE_COMPONENT,
+                }
+            ]
+        })
+        log.verbose('type', type);
+        if (type === TYPE_PROJECT) {
+            const o = await inquirer.prompt([
+                {
+                    type: 'input',
+                    name: 'projectName',
+                    message: '请输入项目名称',
+                    default: '',
+                    validate: function(v) {
+                        // 1. 首字符必须为英文字符
+                        // 2. 尾字符必须为英文或数字，不能为字符
+                        // 3. 字符只允许为'-_'
+                        const done = this.async();
+                        setTimeout(() => {
+                            if (!/^[a-zA-Z]+[\w-]*[a-zA-Z0-9]$/.test(v)) {
+                                done('请输入合法的项目名称');
+                                return;
+                            }
+                            done(null, true);
+                        }, 0)
+                    },
+                    filter: function(v) {
+                        return v;
+                    }
+                },
+                {
+                    type: 'input',
+                    name: 'projectVersion',
+                    message: '请输入项目版本号',
+                    default: '1.0.0',
+                    validate: function(v) {
+                        const done = this.async();
+                        setTimeout(() => {
+                            if (!(!!semver.valid(v))) {
+                                done('请输入合法的版本号');
+                                return;
+                            }
+                            done(null, true);
+                        }, 0)
+                    },
+                    filter: function(v) {
+                        if (!!semver.valid(v)) {
+                            return semver.valid(v)
+                        } else {
+                            return v;
+                        }
+                    }
+                }
+            ])
+            console.log(o);
+        } else if (type === TYPE_COMPONENT) {
+
+        }
+        return projectInfo;
+    }
+
     isCwdEmpty(localPath) {
         let fileList = fs.readdirSync(localPath);
         fileList = fileList.filter(file => (
