@@ -20,14 +20,23 @@ class InitCommand extends Command {
     async exec() {
         try {
             // 1. 准备阶段
-            const ret = await this.prepare();
-            if (ret) {
+            const projectInfo = await this.prepare();
+            if (projectInfo) {
                 // 2. 下载模板
+                log.verbose('projectInfo', projectInfo);
+                this.downloadTemplate();
                 // 3. 安装模板
             }
         } catch (e) {
             log.error(e.message);
         }
+    }
+    downloadTemplate() {
+        // 1. 通过项目模板API获取项目模板信息
+        // 1.1 通过egg.js搭建一套后端系统
+        // 1.2 通过npm存储项目模板  (vue-cli/vue-element-admin)
+        // 1.3 将项目模板信息存储到mongodb数据库中
+        // 1.4 通过egg.js获取mongodb中的数据并且通过API返回
     }
     async prepare() {
         const localPath = process.cwd();
@@ -65,7 +74,7 @@ class InitCommand extends Command {
     }
 
     async getProjectInfo() {
-        const projectInfo = {};
+        let projectInfo = {};
         const { type } = await inquirer.prompt({
             type: 'list',
             name: 'type',
@@ -84,7 +93,7 @@ class InitCommand extends Command {
         })
         log.verbose('type', type);
         if (type === TYPE_PROJECT) {
-            const o = await inquirer.prompt([
+            const project = await inquirer.prompt([
                 {
                     type: 'input',
                     name: 'projectName',
@@ -131,7 +140,10 @@ class InitCommand extends Command {
                     }
                 }
             ])
-            console.log(o);
+            projectInfo = {
+                type,
+                ...project
+            }
         } else if (type === TYPE_COMPONENT) {
 
         }
