@@ -15,6 +15,9 @@ const getProjectTemplate = require("./getProjectTemplate");
 const TYPE_PROJECT = 'project';
 const TYPE_COMPONENT = 'component';
 
+const TEMPLATE_TYPE_NORMAL = 'normal';
+const TEMPLATE_TYPE_CUSTOM = 'custom';
+
 class InitCommand extends Command {
     init() {
         this.projectName = this._argv[0] || '';
@@ -32,11 +35,38 @@ class InitCommand extends Command {
                 this.projectInfo = projectInfo;
                 await this.downloadTemplate();
                 // 3. 安装模板
+                await this.installTemplate();
             }
         } catch (e) {
             log.error(e.message);
         }
     }
+
+    async installTemplate() {
+        if (this.templateInfo) {
+            if (!this.templateInfo.type) {
+                this.templateInfo.type = TEMPLATE_TYPE_NORMAL;
+            }
+            if (this.templateInfo.type === TEMPLATE_TYPE_NORMAL) {
+                // 标准安装
+            } else if (this.templateInfo.type === TEMPLATE_TYPE_CUSTOM) {
+                // 自定义安装
+            } else {
+                throw new Error('项目模板类型无法识别!');
+            }
+        } else {
+            throw new Error('项目模板不存在!');
+        }
+    }
+
+    async installNormalTemplate() {
+
+    }
+
+    async installCustomTemplate() {
+
+    }
+
     async downloadTemplate() {
         // 1. 通过项目模板API获取项目模板信息
         // 1.1 通过egg.js搭建一套后端系统
@@ -54,27 +84,33 @@ class InitCommand extends Command {
             packageName: npmName,
             packageVersion: version,
         })
+        this.templateInfo = templateInfo;
         if (! await templateNpm.exists()) {
             const spinner = spinnerStart('正在下载模板...');
             await sleep();
             try {
                 await templateNpm.install();
-                log.success('下载模板成功');
             } catch (error) {
                 throw error;
             } finally {
                 spinner.stop(true);
+                if (await templateNpm.exists()) {
+                    log.success('下载模板成功');
+                }
             }
         } else {
             const spinner = spinnerStart('正在更新模板...');
             await sleep();
             try {
                 await templateNpm.update();
-                log.success('更新模板成功');
+                
             } catch (error) {
                 throw error;
             } finally {
                 spinner.stop(true);
+                if (await templateNpm.exists()) {
+                    log.success('更新模板成功');
+                }
             }
         }
     }
