@@ -8,7 +8,7 @@ const semver = require("semver");
 const userHome = require("user-home");
 const Command = require("@sorrow-cli-dev/command");
 const Package = require("@sorrow-cli-dev/package");
-const { spinnerStart, sleep } = require("@sorrow-cli-dev/utils");
+const { spinnerStart, sleep, execAsync } = require("@sorrow-cli-dev/utils");
 const log = require('@sorrow-cli-dev/log');
 const getProjectTemplate = require("./getProjectTemplate");
 
@@ -17,6 +17,8 @@ const TYPE_COMPONENT = 'component';
 
 const TEMPLATE_TYPE_NORMAL = 'normal';
 const TEMPLATE_TYPE_CUSTOM = 'custom';
+
+const WHITE_COMMAND = ['npm', 'cnpm'];
 
 class InitCommand extends Command {
     init() {
@@ -41,6 +43,33 @@ class InitCommand extends Command {
             log.error(e.message);
         }
     }
+    
+    checkCommand(cmd) {
+        if (WHITE_COMMAND.includes(cmd)) {
+            return cmd;
+        }
+        return null;
+    }
+
+    async execCommand(command, errMsg) {
+        let ret;
+        if (command) {
+            const installCmd = command.split(' ');
+            const cmd = this.checkCommand(installCmd[0]);
+            if (!cmd) {
+                throw new Error('命令不存在！命令：' + command);
+            }
+            const args = installCmd.slice(1);
+            ret = await execAsync(cmd, args, {
+                stdio: 'inherit',
+                cwd: process.cwd()
+            });
+        }
+        if (ret !== 0) {
+            throw new Error(errMsg);
+        }
+        return ret;
+    }
 
     async installTemplate() {
         if (this.templateInfo) {
@@ -49,6 +78,7 @@ class InitCommand extends Command {
             }
             if (this.templateInfo.type === TEMPLATE_TYPE_NORMAL) {
                 // 标准安装
+                this.installNormalTemplate();
             } else if (this.templateInfo.type === TEMPLATE_TYPE_CUSTOM) {
                 // 自定义安装
             } else {
@@ -60,7 +90,24 @@ class InitCommand extends Command {
     }
 
     async installNormalTemplate() {
-
+        let spinner = spinnerStart('正在安装模板');
+        await sleep();
+        try {
+            const templatePath = path.resolve(this.templateNpm.cacheFilePath, 'template');
+            const targetPath = process.cwd();
+            fse.ensureDirSync(templatePath);
+            fse.ensureDirSync(targetPath);
+            fse.copySync(templatePath, targetPath);
+        } catch (error) {
+            throw(error);
+        } finally {
+            spinner.stop(true);
+            log.success('模板安装成功');
+            const { installCommand, startCommand } = this.templateInfo;
+            // 依赖安装
+            await this.execCommand(installCommand, '依赖安装过程失败！');
+            await this.execCommand(startCommand, '依赖安装过程失败！');
+        }
     }
 
     async installCustomTemplate() {
@@ -96,6 +143,7 @@ class InitCommand extends Command {
                 spinner.stop(true);
                 if (await templateNpm.exists()) {
                     log.success('下载模板成功');
+                    this.templateNpm = templateNpm;
                 }
             }
         } else {
@@ -110,6 +158,7 @@ class InitCommand extends Command {
                 spinner.stop(true);
                 if (await templateNpm.exists()) {
                     log.success('更新模板成功');
+                    this.templateNpm = templateNpm;
                 }
             }
         }

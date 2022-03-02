@@ -3,7 +3,7 @@
 const path = require("path");
 const Package = require("@sorrow-cli-dev/package");
 const log = require("@sorrow-cli-dev/log");
-const cp = require("child_process");
+const { exec: spawn } = require("@sorrow-cli-dev/utils");
 
 const SETTINGS = {
     init: '@sorrow-cli-dev/init'
@@ -75,15 +75,6 @@ async function exec() {
             log.error(e.message);
         }
     }
-}
-
-// 兼容macOS和windows系统
-function spawn(command, args, options) {
-    const win32 = process.platform === 'win32';
-    const cmd = win32 ? 'cmd' : command;
-    const cmdArgs = win32 ? ['/c'].concat(command, args) : args;
-    console.log(cmd, cmdArgs)
-    return cp.spawn(cmd, cmdArgs, options || {});
 }
 
 module.exports = exec;
