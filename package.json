@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "release": "release-it"
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,8 @@
   },
   "homepage": "https://github.com/sorrowwolf/project-cli#readme",
   "devDependencies": {
-    "lerna": "^3.22.1"
+    "@release-it/conventional-changelog": "^5.1.1",
+    "lerna": "^3.22.1",
+    "release-it": "^15.11.0"
   }
 }
